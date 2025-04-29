@@ -11,6 +11,14 @@ class User(db.Model):
     username = db.Column(db.String, nullable=False, unique=True)
     workouts = db.relationship("Workout", back_populates="user", cascade="all, delete-orphan")
 
+
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "username" : self.id
+        }
+
+
 class Workout(db.Model):
     __tablename__ = "workouts"
 
@@ -21,3 +29,14 @@ class Workout(db.Model):
     distance = db.Column(db.Float, nullable=False)  # Kilometers
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user = db.relationship("User", back_populates="workouts")
+
+
+    def to_dict(self):
+        return {
+            "id" : self.id,
+            "user_id": self.user_id,
+            "workout_type" : self.workout_type,
+            "duration": self.duration,
+            "distance": self.distance,
+            "date": self.date
+        }
