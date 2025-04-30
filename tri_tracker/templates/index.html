@@ -3,51 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test User Creation</title>
+    <title>Document</title>
 </head>
 <body>
-    <h2>Create a New User</h2>
-    <form id="user-form">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required>
-        <button type="submit">Submit</button>
+    <h1>Tri Tracker</h1>
+    <h2>Select user</h2>
+    <form method="POST" action="/login">
+        <label for="username">Choose a user:</label>    
+        <select name="username" id="username">
+            {% for user in users %}
+            <option value="{{ user.username }}">{{ user.username }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Continue</button>
     </form>
 
-    <div id="response"></div>
-
-    <script>
-        // Listen for form submission
-        document.getElementById('user-form').addEventListener('submit', async function (e) {
-            e.preventDefault(); // Prevent the default form submission
-
-            // Get the username input value
-            const username = document.getElementById('username').value;
-
-            // Create the data object to send in the POST request
-            const data = { username };
-
-            // Send the POST request to the Flask backend
-            try {
-                const response = await fetch('http://localhost:5000/test', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json', // Send as JSON
-                    },
-                    body: JSON.stringify(data), // Convert data object to JSON string
-                });
-
-                // Check if the request was successful
-                if (response.ok) {
-                    const jsonResponse = await response.json();
-                    document.getElementById('response').innerText = `User created: ${jsonResponse.user.username}`;
-                } else {
-                    document.getElementById('response').innerText = `Error: ${response.statusText}`;
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                document.getElementById('response').innerText = 'An error occurred.';
-            }
-        });
-    </script>
 </body>
-</html>
+</html> 
