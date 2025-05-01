@@ -6,34 +6,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Tri Tracker</h1> <br>
-    <h2>Select user</h2>
-    <form method="POST" action="/login">
-        <label for="username"></label>    
-        <select name="username" id="username">
-            {% for user in users %}
-            <option value="{{ user.username }}">{{ user.username }}</option>
-            {% endfor %}
-        </select><br><br>
-        <button type="submit">Continue</button>
-    </form> <br><br>
-    
-    <h2>Create new user:</h2>
-    <form method="POST" action="/create-user">
-        <label for="new_username"></label>
-        <input type="text" id="new_username" name="new_username"><br><br>
-        <button type="submit">Create user</button>
-    </form>
-
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
-
+    <h1>{{ username }}</h1>
 </body>
-</html> 
+</html>
