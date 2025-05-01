@@ -6,6 +6,17 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>{{ username }}</h1>
+    <h1>Welcome {{ username }}</h1><br><br>
+
+    <h2>Create task:</h2>
+    <form method="POST" action="">
+        <label for="distance">Insert distance</label>
+        <input type="number" step="any" 2name="distance" id="distance" min="0" required> <br><br>
+
+        <label for="time">Insert time</label>
+        <input type="number" step="any" id="time" min="0" required> <br><br>
+
+        <button type="submit">Submit</button>
+    </form>
 </body>
 </html>

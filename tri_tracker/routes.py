@@ -13,9 +13,17 @@ def init_routes(app):
     
     @app.route("/login", methods=["POST", "GET"])
     def login():
-        username = request.form.get("username")
-        session["username"] = username
-        return redirect(url_for("index"))
+        if request.method == "POST":
+            username = request.form.get("username")
+            session["username"] = username
+            return redirect(url_for("index"))
+        users = User.query.all()
+        return render_template("login.html", users=users)
+    
+    @app.route("/logout")
+    def logout():
+        session.pop("username", None)
+        return redirect(url_for("login"))
 
     
     @app.route("/create-user", methods=["POST"])
