@@ -39,3 +39,22 @@ def init_routes(app):
         db.session.commit()
         flash("user created successfully")
         return redirect(url_for("login"))
+
+
+    @app.route("/create-workout", methods=["POST"])
+    def create_workout():
+        workout_type = request.form.get("type")
+        distance = request.form.get("distance")
+        duration = request.form.get("duration")
+        user = User.query.filter_by(username=session["username"]).first()
+
+        workout = Workout(
+            user=user,
+            workout_type=workout_type,
+            distance=float(distance),
+            duration=float(duration)
+        )
+        
+        db.session.add(workout)
+        db.session.commit()
+        return redirect(url_for("index"))

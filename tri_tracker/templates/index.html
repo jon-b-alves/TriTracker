@@ -8,14 +8,21 @@
 <body>
     <h1>Welcome {{ username }}</h1><br><br>
 
-    <h2>Create task:</h2>
-    <form method="POST" action="">
+    <h2>Workout:</h2>
+    <form method="POST" action="/create-workout">
+        <label for="type">Type of workout</label>    
+        <select name="type" id="type">
+            <option value="swim">swim</option>
+            <option value="bike">bike</option>
+            <option value="run">run</option>
+        </select><br><br>
+
         <label for="distance">Insert distance</label>
-        <input type="number" step="any" 2name="distance" id="distance" min="0" required> <br><br>
+        <input type="number" step="any" name="distance" id="distance" min="0" required> <br><br>
 
-        <label for="time">Insert time</label>
-        <input type="number" step="any" id="time" min="0" required> <br><br>
-
+        <label for="duration">Insert duration</label>
+        <input type="number" step="any" name="duration" id="duration" min="0" required> <br><br>
+        
         <button type="submit">Submit</button>
     </form>
 </body>
