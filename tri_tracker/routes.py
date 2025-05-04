@@ -46,13 +46,15 @@ def init_routes(app):
         workout_type = request.form.get("type")
         distance = request.form.get("distance")
         duration = request.form.get("duration")
+        pace = float(duration) / float(distance)         
         user = User.query.filter_by(username=session["username"]).first()
 
         workout = Workout(
             user=user,
             workout_type=workout_type,
             distance=float(distance),
-            duration=float(duration)
+            duration=float(duration),
+            pace=float(pace)
         )
         
         db.session.add(workout)

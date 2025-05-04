@@ -27,6 +27,7 @@ class Workout(db.Model):
     workout_type = db.Column(db.String, nullable=False)  # Swim, Bike, Run
     duration = db.Column(db.Float, nullable=False)  # Minutes
     distance = db.Column(db.Float, nullable=False)  # Kilometers
+    pace = db.Column(db.Float, nullable=False)
     date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     user = db.relationship("User", back_populates="workouts")
 
