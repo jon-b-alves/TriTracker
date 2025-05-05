@@ -2,6 +2,7 @@ from flask import render_template, request, jsonify, redirect, url_for, flash, s
 from tri_tracker.models import User, Workout, db
 import time
 
+
 def init_routes(app):
     @app.route("/")
     def index():
@@ -78,3 +79,18 @@ def init_routes(app):
         db.session.add(workout)
         db.session.commit()
         return redirect(url_for("index"))
+    
+
+def run_workouts() -> list[float]:
+    run_workouts = db.session.query(Workout).filter(Workout.workout_type == "run").all()
+    return [workout.pace for workout in run_workouts]
+
+
+def swim_workouts() -> list[float]:
+    swim_workouts = db.session.query(Workout).filter(Workout.workout_type == "swim").all()
+    return [workout.pace for workout in swim_workouts]
+
+
+def bike_workouts() -> list[float]:
+    bike_workouts = db.session.query(Workout).filter(Workout.workout_type == "bike").all()
+    return [workout.pace for workout in bike_workouts]
