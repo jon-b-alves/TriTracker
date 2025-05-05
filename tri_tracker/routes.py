@@ -1,25 +1,43 @@
 from flask import render_template, request, jsonify, redirect, url_for, flash, session
 from tri_tracker.models import User, Workout, db
+import time
 
 def init_routes(app):
     @app.route("/")
     def index():
-        users = User.query.all()
+        #users = User.query.all()
         username = session.get("username")
-        if username:
-            return render_template("index.html", username=username)    
-        return render_template("login.html", users=users)
+        user_id = session.get("user_id")
+        if username and user_id:
+            return render_template("index.html", username=username, user_id=user_id)    
+        #return render_template("login.html", users=users)
+        return redirect(url_for("login"))
     
     
     @app.route("/login", methods=["POST", "GET"])
     def login():
         if request.method == "POST":
+            t0 = time.time()
             username = request.form.get("username")
+            t1 = time.time()
+            user = User.query.filter_by(username=username).first()
+            t2 = time.time()
+            
             session["username"] = username
+            session["user_id"] = user.id
+            t3 = time.time()
+
+            print(f"Form read: {(t1 - t0):.4f}s")
+            print(f"DB query: {(t2 - t1):.4f}s")
+            print(f"Session set: {(t3 - t2):.4f}s")
+            print(f"Total before redirect: {(t3 - t0):.4f}s")
+            
             return redirect(url_for("index"))
-        users = User.query.all()
+        
+        users = User.query.with_entities(User.username).all()
         return render_template("login.html", users=users)
     
+
     @app.route("/logout")
     def logout():
         session.pop("username", None)

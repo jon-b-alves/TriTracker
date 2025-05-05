@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    <h1>Welcome {{ username }}</h1><br><br>
+    <h1>{{ username }} <br>id: {{ user_id }}</h1><br><br>
 
     <h2>Workout:</h2>
     <form method="POST" action="/create-workout">
@@ -26,7 +25,8 @@
         
         <button type="submit">Submit</button>
     </form>
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
     <h2>Chart:</h2>
     <div>
         <canvas id="myChart"></canvas>
@@ -53,7 +53,6 @@
                 }
             }
         });
-    </script>
-        
+    </script> 
 </body>
 </html>
