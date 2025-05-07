@@ -26,33 +26,139 @@
         <button type="submit">Submit</button>
     </form>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     
-    <h2>Chart:</h2>
+    <h2>Chart: Swim Pace</h2>
     <div>
-        <canvas id="myChart"></canvas>
+        <canvas id="swimPace" width="400" height="200"></canvas>
     </div>
-    
+
+    <h2>Chart: Bike Pace</h2>
+    <div>
+        <canvas id="bikePace" width="400" height="200"></canvas>
+    </div>
+
+    <h2>Chart: Run Pace</h2>
+    <div>
+        <canvas id="runPace" width="400" height="200"></canvas>
+    </div>
+
     <script>
-        const ctx = document.getElementById('myChart');
-      
+        const ctx = document.getElementById('swimPace');
         new Chart(ctx, {
             type: 'line',
             data: {
-            labels: {{ swim_workout_dates | tojson }},
-            datasets: [{
-                label: 'pace',
-                data: {{ swim_workout_paces | tojson }},
-                borderWidth: 1
-            }]
-        },
+                labels: {{ swim_workout_dates | tojson }},
+                datasets: [{
+                    label: 'pace',
+                    data: {{ swim_workout_paces | tojson }},
+                    borderWidth: 1
+                }]
+            },
             options: {
                 scales: {
                     y: {
                         beginAtZero: true
                     }
+                },
+                plugins: {
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'xy'
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'xy'
+                        }
+                    }
                 }
             }
         });
-    </script> 
+    </script>
+
+<script>
+    const ctx2 = document.getElementById('bikePace');
+    new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: {{ bike_workout_dates | tojson }},
+            datasets: [{
+                label: 'pace',
+                data: {{ bike_workout_paces | tojson }},
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy'
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: true
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy'
+                    }
+                }
+            }
+        }
+    });
+</script>
+
+<script>
+    const ctx3 = document.getElementById('runPace');
+    new Chart(ctx3, {
+        type: 'line',
+        data: {
+            labels: {{ run_workout_dates | tojson }},
+            datasets: [{
+                label: 'pace',
+                data: {{ run_workout_paces | tojson }},
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'xy'
+                    },
+                    zoom: {
+                        wheel: {
+                            enabled: true
+                        },
+                        pinch: {
+                            enabled: true
+                        },
+                        mode: 'xy'
+                    }
+                }
+            }
+        }
+    });
+</script>
+    
 </body>
 </html>
