@@ -38,10 +38,10 @@
         new Chart(ctx, {
             type: 'line',
             data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: {{ swim_workout_dates | tojson }},
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                label: 'pace',
+                data: {{ swim_workout_paces | tojson }},
                 borderWidth: 1
             }]
         },

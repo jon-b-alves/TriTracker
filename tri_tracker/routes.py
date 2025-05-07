@@ -1,17 +1,32 @@
 from flask import render_template, request, jsonify, redirect, url_for, flash, session
 from tri_tracker.models import User, Workout, db
+from sqlalchemy import asc
 import time
 
 
 def init_routes(app):
     @app.route("/")
     def index():
-        #users = User.query.all()
         username = session.get("username")
         user_id = session.get("user_id")
+
+        run_workout_dates, run_workout_paces = get_workouts("run", user_id)
+        swim_workout_dates, swim_workout_paces = get_workouts("swim", user_id)
+        bike_workout_dates, bike_workout_paces = get_workouts("bike", user_id)
+        
+
         if username and user_id:
-            return render_template("index.html", username=username, user_id=user_id)    
-        #return render_template("login.html", users=users)
+            return render_template(
+                "index.html", 
+                username=username, 
+                user_id=user_id,
+                run_workout_dates=run_workout_dates, 
+                run_workout_paces=run_workout_paces,
+                swim_workout_dates=swim_workout_dates, 
+                swim_workout_paces=swim_workout_paces,
+                bike_workout_dates=bike_workout_dates,
+                bike_workout_paces=bike_workout_paces
+            )    
         return redirect(url_for("login"))
     
     
@@ -80,17 +95,21 @@ def init_routes(app):
         db.session.commit()
         return redirect(url_for("index"))
     
+'''
+def get_workout_paces_by_type(workout_type: str) -> list[float]:
+    workouts = db.session.query(Workout).filter(Workout.workout_type == workout_type).all()
+    return [workout.pace for workout in workouts]
+'''
 
-def run_workouts() -> list[float]:
-    run_workouts = db.session.query(Workout).filter(Workout.workout_type == "run").all()
-    return [workout.pace for workout in run_workouts]
+def get_workouts(workout_type: str, user_id: int):
+    workouts = db.session.query(Workout.date, Workout.pace)\
+    .filter_by(user_id=user_id, workout_type=workout_type)\
+    .order_by(asc(Workout.date))\
+    .all()
 
+    dates = [workout.date for workout in workouts]
+    paces = [workout.pace for workout in workouts]
+    
+    return dates, paces
 
-def swim_workouts() -> list[float]:
-    swim_workouts = db.session.query(Workout).filter(Workout.workout_type == "swim").all()
-    return [workout.pace for workout in swim_workouts]
-
-
-def bike_workouts() -> list[float]:
-    bike_workouts = db.session.query(Workout).filter(Workout.workout_type == "bike").all()
-    return [workout.pace for workout in bike_workouts]
+    
