@@ -3,37 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tri Tracker - Login</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Tri Tracker</h1> <br>
-    <h2>Select user</h2>
-    <form method="POST" action="/login">
-        <label for="username"></label>    
-        <select name="username" id="username">
-            {% for user in users %}
-            <option value="{{ user.username }}">{{ user.username }}</option>
-            {% endfor %}
-        </select><br><br>
-        <button type="submit">Continue</button>
-    </form> <br><br>
-    
-    <h2>Create new user:</h2>
-    <form method="POST" action="/create-user">
-        <label for="new_username"></label>
-        <input type="text" id="new_username" name="new_username"><br><br>
-        <button type="submit">Create user</button>
-    </form>
+<body class="bg-gray-800 flex justify-center items-center h-screen">
 
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+        <h1 class="text-4xl font-bold text-center text-blue-600 mb-4">Tri Tracker</h1>
+        
+        <h2 class="text-2xl font-semibold text-center mb-6">Select User</h2>
+
+        <form method="POST" action="/login" class="space-y-4">
+            <div class="flex flex-col">
+                <label for="username" class="text-lg font-medium">Username</label>
+                <select name="username" id="username" class="border border-gray-300 rounded-md px-4 py-2 mt-2">
+                    {% for user in users %}
+                    <option value="{{ user.username }}">{{ user.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Continue</button>
+        </form>
+
+        <div class="mt-16">
+            <h2 class="text-2xl font-semibold text-center mb-6">Create New User</h2>
+            <form method="POST" action="/create-user" class="space-y-4">
+                <div class="flex flex-col">
+                    <label for="new_username" class="text-lg font-medium">New Username</label>
+                    <input type="text" id="new_username" name="new_username" class="border border-gray-300 rounded-md px-4 py-2 mt-2 w-full">
+                </div>
+                
+                <button type="submit" class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition">Create User</button>
+            </form>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="mt-4 space-y-2 text-red-600">
+                    {% for message in messages %}
+                        <li class="text-sm">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    </div>
 
 </body>
-</html> 
+</html>
