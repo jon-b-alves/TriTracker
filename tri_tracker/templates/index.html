@@ -6,42 +6,54 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <title>Document</title>
 </head>
-<body>
-    <h1>{{ username }} <br>id: {{ user_id }}</h1><br><br>
-
-    <h2>Workout:</h2>
-    <form method="POST" action="/create-workout">
-        <label for="type">Type of workout</label>    
-        <select name="type" id="type">
-            <option value="swim">swim</option>
-            <option value="bike">bike</option>
-            <option value="run">run</option>
-        </select><br><br>
-
-        <label for="distance">Insert distance</label>
-        <input type="number" step="any" name="distance" id="distance" min="0" required> <br><br>
-
-        <label for="duration">Insert duration</label>
-        <input type="number" step="any" name="duration" id="duration" min="0" required> <br><br>
+<body class="bg-gray-200 flex h-screen">
+    <div class="bg-green-500 p-6 m-2 rounded-lg">
+        <h1>{{ username }} <br>id: {{ user_id }}</h1><br><br>
+        <h2 class="text-3xl font-bold text-center mb-6">Workout</h2>
+        <form method="POST" action="/create-workout">
+            <div class="flex flex-col">
+                <label for="type">Type of workout</label>    
+                <select name="type" id="type" class="border border-gray-600 rounded-md">
+                    <option value="swim">swim</option>
+                    <option value="bike">bike</option>
+                    <option value="run">run</option>
+                </select><br><br>
+            </div>
         
-        <button type="submit">Submit</button>
-    </form>
+
+            <div class="flex flex-col"> 
+                <label for="distance">Insert distance</label>
+                <input type="number" step="any" name="distance" id="distance" min="0" required> <br><br>
+            </div>
+
+            <div class="flex flex-col">
+                <label for="duration">Insert duration</label>
+                <input type="number" step="any" name="duration" id="duration" min="0" required> <br><br>
+            </div>
+            
+            <button type="submit" class="bg-blue-500 text-white rounded-lg py-2 w-full hover:bg-blue-600 transition">Submit</button>
+    
+        </form>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     
-    <h2>Chart: Swim Pace</h2>
-    <div>
-        <canvas id="swimPace" width="400" height="200"></canvas>
-    </div>
+    <div class="flex">
+        <h2>Chart: Swim Pace</h2>
+        <div>
+            <canvas id="swimPace" width="400" height="200"></canvas>
+        </div>
 
-    <h2>Chart: Bike Pace</h2>
-    <div>
-        <canvas id="bikePace" width="400" height="200"></canvas>
-    </div>
+        <h2>Chart: Bike Pace</h2>
+        <div>
+            <canvas id="bikePace" width="400" height="200"></canvas>
+        </div>
 
-    <h2>Chart: Run Pace</h2>
-    <div>
-        <canvas id="runPace" width="400" height="200"></canvas>
+        <h2>Chart: Run Pace</h2>
+        <div>
+            <canvas id="runPace" width="400" height="200"></canvas>
+        </div>
     </div>
 
     <script>
