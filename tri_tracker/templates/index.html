@@ -22,12 +22,12 @@
         
 
             <div class="flex flex-col"> 
-                <label for="distance">Insert distance</label>
+                <label for="distance">Insert distance (meters)</label>
                 <input type="number" step="any" name="distance" id="distance" min="0" required> <br><br>
             </div>
 
             <div class="flex flex-col">
-                <label for="duration">Insert duration</label>
+                <label for="duration">Insert duration (minutes)</label>
                 <input type="number" step="any" name="duration" id="duration" min="0" required> <br><br>
             </div>
             
@@ -39,20 +39,17 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
     
-    <div class="flex">
-        <h2>Chart: Swim Pace</h2>
-        <div>
-            <canvas id="swimPace" width="400" height="200"></canvas>
+    <div class="flex flex-col justify-center">
+        <div class="p-4">
+            <canvas id="swimPace" width="600" height="250"></canvas>
         </div>
 
-        <h2>Chart: Bike Pace</h2>
-        <div>
-            <canvas id="bikePace" width="400" height="200"></canvas>
+        <div class="p-4">
+            <canvas id="bikePace" width="600" height="250"></canvas>
         </div>
 
-        <h2>Chart: Run Pace</h2>
-        <div>
-            <canvas id="runPace" width="400" height="200"></canvas>
+        <div class="p-4">
+            <canvas id="runPace" width="600" height="250"></canvas>
         </div>
     </div>
 
@@ -63,13 +60,20 @@
             data: {
                 labels: {{ swim_workout_dates | tojson }},
                 datasets: [{
-                    label: 'pace',
+                    label: 'Swim Pace',
                     data: {{ swim_workout_paces | tojson }},
                     borderWidth: 1
                 }]
             },
             options: {
                 scales: {
+                    x: {
+                        ticks: {
+                            maxTicksLimit: 8,
+                            autoskip: true,
+                        }
+                    },
+                    
                     y: {
                         beginAtZero: true
                     }
@@ -102,13 +106,19 @@
         data: {
             labels: {{ bike_workout_dates | tojson }},
             datasets: [{
-                label: 'pace',
+                label: 'Bike Pace',
                 data: {{ bike_workout_paces | tojson }},
                 borderWidth: 1
             }]
         },
         options: {
             scales: {
+                x: {
+                    ticks: {
+                        maxTicksLimit: 8,
+                        autoskip: true,
+                    }
+                },
                 y: {
                     beginAtZero: true
                 }
@@ -141,13 +151,19 @@
         data: {
             labels: {{ run_workout_dates | tojson }},
             datasets: [{
-                label: 'pace',
+                label: 'Run Pace',
                 data: {{ run_workout_paces | tojson }},
                 borderWidth: 1
             }]
         },
         options: {
             scales: {
+                x: {
+                    ticks: {
+                        maxTicksLimit: 8,
+                        autoskip: true,
+                    }
+                },
                 y: {
                     beginAtZero: true
                 }

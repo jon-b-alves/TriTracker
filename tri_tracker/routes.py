@@ -107,7 +107,7 @@ def get_workouts(workout_type: str, user_id: int):
     .order_by(asc(Workout.date))\
     .all()
 
-    dates = [workout.date for workout in workouts]
+    dates = [workout.date.strftime("%m/%d") for workout in workouts]
     paces = [workout.pace for workout in workouts]
     
     return dates, paces
