@@ -23,12 +23,12 @@
 
             <div class="flex flex-col"> 
                 <label for="distance">Insert distance (meters)</label>
-                <input type="number" step="any" name="distance" id="distance" min="0" required> <br><br>
+                <input type="number" step="any" name="distance" id="distance" min="0" required class="rounded-md"> <br><br>
             </div>
 
             <div class="flex flex-col">
                 <label for="duration">Insert duration (minutes)</label>
-                <input type="number" step="any" name="duration" id="duration" min="0" required> <br><br>
+                <input type="number" step="any" name="duration" id="duration" min="0" required class="rounded-md"> <br><br>
             </div>
             
             <button type="submit" class="bg-blue-500 text-white rounded-lg py-2 w-full hover:bg-blue-600 transition">Submit</button>
@@ -62,8 +62,19 @@
                 datasets: [{
                     label: 'Swim Pace',
                     data: {{ swim_workout_paces | tojson }},
-                    borderWidth: 1
-                }]
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                    pointRadius: 2
+                },
+                {
+                    label: 'Average Pace',
+                    data: {{ swim_workout_average_pace | tojson }},
+                    borderColor: 'red',
+                    borderDash: [5, 5], // dashed line for visual distinction
+                    borderWidth: 1,
+                    pointRadius: 0
+                }
+                ]
             },
             options: {
                 scales: {
@@ -108,8 +119,20 @@
             datasets: [{
                 label: 'Bike Pace',
                 data: {{ bike_workout_paces | tojson }},
-                borderWidth: 1
-            }]
+                borderColor: 'blue',
+                borderWidth: 1,
+                pointRadius: 2
+            },
+            {
+                label: 'Average Pace',
+                data: {{ bike_workout_average_pace | tojson }},
+                borderColor: 'red',
+                borderDash: [5, 5], // dashed line for visual distinction
+                borderWidth: 1,
+                pointRadius: 0
+            }
+            
+            ]
         },
         options: {
             scales: {
@@ -153,8 +176,19 @@
             datasets: [{
                 label: 'Run Pace',
                 data: {{ run_workout_paces | tojson }},
-                borderWidth: 1
-            }]
+                borderColor: 'blue',
+                borderWidth: 1,
+                pointRadius: 2
+            },
+            {
+                label: 'Average Pace',
+                data: {{ run_workout_average_pace | tojson }},
+                borderColor: 'red',
+                borderDash: [5, 5], // dashed line for visual distinction
+                borderWidth: 1,
+                pointRadius: 0
+            }
+        ]
         },
         options: {
             scales: {

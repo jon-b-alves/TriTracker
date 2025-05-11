@@ -10,9 +10,9 @@ def init_routes(app):
         username = session.get("username")
         user_id = session.get("user_id")
 
-        run_workout_dates, run_workout_paces = get_workouts("run", user_id)
-        swim_workout_dates, swim_workout_paces = get_workouts("swim", user_id)
-        bike_workout_dates, bike_workout_paces = get_workouts("bike", user_id)
+        run_workout_dates, run_workout_paces, run_workout_average_pace = get_workouts("run", user_id)
+        swim_workout_dates, swim_workout_paces, swim_workout_average_pace = get_workouts("swim", user_id)
+        bike_workout_dates, bike_workout_paces, bike_workout_average_pace = get_workouts("bike", user_id)
         
 
         if username and user_id:
@@ -20,12 +20,18 @@ def init_routes(app):
                 "index.html", 
                 username=username, 
                 user_id=user_id,
+                
                 run_workout_dates=run_workout_dates, 
                 run_workout_paces=run_workout_paces,
+                run_workout_average_pace=run_workout_average_pace,
+                
                 swim_workout_dates=swim_workout_dates, 
                 swim_workout_paces=swim_workout_paces,
+                swim_workout_average_pace=swim_workout_average_pace,
+                
                 bike_workout_dates=bike_workout_dates,
-                bike_workout_paces=bike_workout_paces
+                bike_workout_paces=bike_workout_paces,
+                bike_workout_average_pace=bike_workout_average_pace
             )    
         return redirect(url_for("login"))
     
@@ -109,7 +115,9 @@ def get_workouts(workout_type: str, user_id: int):
 
     dates = [workout.date.strftime("%m/%d") for workout in workouts]
     paces = [workout.pace for workout in workouts]
+    average_pace = sum(paces) / len(paces) if paces else 0
+    average_pace_line = [average_pace] * len(dates)
     
-    return dates, paces
+    return dates, paces, average_pace_line
 
     
