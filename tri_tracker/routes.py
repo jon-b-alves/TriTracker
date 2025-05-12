@@ -39,20 +39,11 @@ def init_routes(app):
     @app.route("/login", methods=["POST", "GET"])
     def login():
         if request.method == "POST":
-            t0 = time.time()
             username = request.form.get("username")
-            t1 = time.time()
             user = User.query.filter_by(username=username).first()
-            t2 = time.time()
             
             session["username"] = username
             session["user_id"] = user.id
-            t3 = time.time()
-
-            print(f"Form read: {(t1 - t0):.4f}s")
-            print(f"DB query: {(t2 - t1):.4f}s")
-            print(f"Session set: {(t3 - t2):.4f}s")
-            print(f"Total before redirect: {(t3 - t0):.4f}s")
             
             return redirect(url_for("index"))
         
@@ -101,11 +92,6 @@ def init_routes(app):
         db.session.commit()
         return redirect(url_for("index"))
     
-'''
-def get_workout_paces_by_type(workout_type: str) -> list[float]:
-    workouts = db.session.query(Workout).filter(Workout.workout_type == workout_type).all()
-    return [workout.pace for workout in workouts]
-'''
 
 def get_workouts(workout_type: str, user_id: int):
     workouts = db.session.query(Workout.date, Workout.pace)\
@@ -120,4 +106,8 @@ def get_workouts(workout_type: str, user_id: int):
     
     return dates, paces, average_pace_line
 
-    
+def get_log(user_id: int):
+    workouts = db.session.query(Workout.workout_type, Workout.duration, Workout.distance, Workout.pace, Workout.date)\
+    .filter_by(user_id=user_id)\
+    .order_by(asc(Workout.date))\
+    .all()
