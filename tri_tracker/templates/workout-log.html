@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Workout Log</title>
 </head>
 <body>
-    
+    <div style="text-align: center;">
+    <h1>Workout Log</h1>
+    <table border="1" style="margin: 0 auto;">
+        <tr>
+            <th>Date</th>
+            <th>Workout Type</th>
+            <th>Duration (min)</th>
+            <th>Distance (km)</th>
+            <th>Pace</th>
+        </tr>
+        {% for workout in workouts %}
+        <tr>
+            <td>{{ workout.date }}</td>
+            <td>{{ workout.workout_type }}</td>
+            <td>{{ workout.duration }}</td>
+            <td>{{ workout.distance }}</td>
+            <td>{{ workout.pace }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
 </body>
 </html>

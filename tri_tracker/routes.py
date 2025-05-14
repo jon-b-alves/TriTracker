@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify, redirect, url_for, flash, session
 from tri_tracker.models import User, Workout, db
-from sqlalchemy import asc
+from sqlalchemy import asc, desc
 import time
 
 
@@ -91,6 +91,13 @@ def init_routes(app):
         db.session.add(workout)
         db.session.commit()
         return redirect(url_for("index"))
+
+    @app.route("/workout-log", methods=["GET"])
+    def workout_log():
+        user_id = session.get("user_id")
+        workouts = get_log(user_id)
+        return render_template("workout-log.html", workouts=workouts)
+        
     
 
 def get_workouts(workout_type: str, user_id: int):
@@ -109,5 +116,7 @@ def get_workouts(workout_type: str, user_id: int):
 def get_log(user_id: int):
     workouts = db.session.query(Workout.workout_type, Workout.duration, Workout.distance, Workout.pace, Workout.date)\
     .filter_by(user_id=user_id)\
-    .order_by(asc(Workout.date))\
+    .order_by(desc(Workout.date))\
     .all()
+
+    return workouts
