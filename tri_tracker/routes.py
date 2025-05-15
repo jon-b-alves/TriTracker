@@ -92,13 +92,21 @@ def init_routes(app):
         db.session.commit()
         return redirect(url_for("index"))
 
+
     @app.route("/workout-log", methods=["GET"])
     def workout_log():
         user_id = session.get("user_id")
         workouts = get_log(user_id)
         return render_template("workout-log.html", workouts=workouts)
-        
     
+
+    @app.route("/delete-workout/<int:workout_id>", methods=["POST"])
+    def delete_workout(workout_id):
+        workout = Workout.query.get_or_404(workout_id)
+        db.session.delete(workout)
+        db.session.commit()
+        return redirect(url_for("workout_log"))
+
 
 def get_workouts(workout_type: str, user_id: int):
     workouts = db.session.query(Workout.date, Workout.pace)\
@@ -113,8 +121,9 @@ def get_workouts(workout_type: str, user_id: int):
     
     return dates, paces, average_pace_line
 
+
 def get_log(user_id: int):
-    workouts = db.session.query(Workout.workout_type, Workout.duration, Workout.distance, Workout.pace, Workout.date)\
+    workouts = db.session.query(Workout.workout_type, Workout.duration, Workout.distance, Workout.pace, Workout.date, Workout.id)\
     .filter_by(user_id=user_id)\
     .order_by(desc(Workout.date))\
     .all()

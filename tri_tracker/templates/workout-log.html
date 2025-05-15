@@ -23,6 +23,11 @@
             <td>{{ workout.duration }}</td>
             <td>{{ workout.distance }}</td>
             <td>{{ workout.pace }}</td>
+            <td>
+                <form action="/delete-workout/{{ workout.id }}" method="POST" style="margin:0;">
+                    <button type="submit" style="background-color: rgb(151, 0, 0); color: white; padding: 4px 10px;">Delete</button>
+                </form>
+            </td>
         </tr>
         {% endfor %}
     </table>
