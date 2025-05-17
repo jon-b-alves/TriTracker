@@ -6,225 +6,255 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <title>Document</title>
 </head>
-<body class="bg-gray-200 flex h-screen">
-    <div class="bg-green-500 p-6 m-2 rounded-lg">
-        <h1>{{ username }} <br>id: {{ user_id }}</h1><br><br>
-        <h2 class="text-3xl font-bold text-center mb-6">Workout</h2>
-        <form method="POST" action="/create-workout">
-            <div class="flex flex-col">
-                <label for="type">Type of workout</label>    
-                <select name="type" id="type" class="border border-gray-600 rounded-md">
-                    <option value="swim">swim</option>
-                    <option value="bike">bike</option>
-                    <option value="run">run</option>
-                </select><br><br>
-            </div>
+<body class="bg-gray-200 h-screen">
+    <div class="flex h-full w-full">
+        <div class="bg-green-500 p-6 m-2 rounded-lg">
+            <h1>{{ username }} <br>id: {{ user_id }}</h1><br><br>
+            <h2 class="text-3xl font-bold text-center mb-6">Workout</h2>
+            <form method="POST" action="/create-workout">
+                <div class="flex flex-col">
+                    <label for="type">Type of workout</label>    
+                    <select name="type" id="type" class="border border-gray-600 rounded-md">
+                        <option value="swim">swim</option>
+                        <option value="bike">bike</option>
+                        <option value="run">run</option>
+                    </select><br><br>
+                </div>
 
-            <div class="flex flex-col"> 
-                <label for="distance">Insert distance (kilometers)</label>
-                <input type="number" step="any" name="distance" id="distance" min="0" required class="rounded-md"> <br><br>
-            </div>
+                <div class="flex flex-col"> 
+                    <label for="distance">Insert distance (kilometers)</label>
+                    <input type="number" step="any" name="distance" id="distance" min="0" required class="rounded-md"> <br><br>
+                </div>
 
-            <div class="flex flex-col">
-                <label for="duration">Insert duration (minutes)</label>
-                <input type="number" step="any" name="duration" id="duration" min="0" required class="rounded-md"> <br><br>
-            </div>
+                <div class="flex flex-col">
+                    <label for="duration">Insert duration (minutes)</label>
+                    <input type="number" step="any" name="duration" id="duration" min="0" required class="rounded-md"> <br><br>
+                </div>
+                
+                <button type="submit" class="bg-blue-500 text-white rounded-lg py-2 w-full hover:bg-blue-600 transition">Submit</button>
             
-            <button type="submit" class="bg-blue-500 text-white rounded-lg py-2 w-full hover:bg-blue-600 transition">Submit</button>
+            <div class="flex flex-col py-16 my-16">
+                <br><br><br><br><h2 class="text-3xl font-bold text-center mb-6">Workout Log</h2>
+                <a href="{{ url_for('workout_log') }}" class="bg-red-500 justify-end text-center text-white rounded-lg py-2 w-full hover:bg-red-600 transition">Redirect</a>
+            </div>
+        </div>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
         
-        <div class="flex flex-col py-16 my-16">
-            <h2 class="text-3xl font-bold text-center mb-6">Workout Log</h2>
-            <a href="{{ url_for('workout_log') }}" class="bg-red-500 justify-end text-center text-white rounded-lg py-2 w-full hover:bg-red-600 transition">Redirect</a>
-        </div>
-    </div>
+        <div class="flex flex-col justify-center items-center w-2/5">
+            <div class="p-4">
+                <canvas id="swimPace" width="600" height="250"></canvas>
+            </div>
 
+            <div class="p-4">
+                <canvas id="bikePace" width="600" height="250"></canvas>
+            </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
-    
-    <div class="flex flex-col justify-center">
-        <div class="p-4">
-            <canvas id="swimPace" width="600" height="250"></canvas>
-        </div>
-
-        <div class="p-4">
-            <canvas id="bikePace" width="600" height="250"></canvas>
+            <div class="p-4">
+                <canvas id="runPace" width="600" height="250"></canvas>
+            </div>
         </div>
 
-        <div class="p-4">
-            <canvas id="runPace" width="600" height="250"></canvas>
-        </div>
-    </div>
-
-    <script>
-        const ctx = document.getElementById('swimPace');
-        new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: {{ swim_workout_dates | tojson }},
-                datasets: [{
-                    label: 'Swim Pace',
-                    data: {{ swim_workout_paces | tojson }},
-                    borderColor: 'blue',
-                    borderWidth: 1,
-                    pointRadius: 2
+        <script>
+            const ctx = document.getElementById('swimPace');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ swim_workout_dates | tojson }},
+                    datasets: [{
+                        label: 'Swim Pace',
+                        data: {{ swim_workout_paces | tojson }},
+                        borderColor: 'blue',
+                        borderWidth: 1,
+                        pointRadius: 2
+                    },
+                    {
+                        label: 'Average Pace',
+                        data: {{ swim_workout_average_pace | tojson }},
+                        borderColor: 'red',
+                        borderDash: [5, 5], // dashed line for visual distinction
+                        borderWidth: 1,
+                        pointRadius: 0
+                    }
+                    ]
                 },
-                {
-                    label: 'Average Pace',
-                    data: {{ swim_workout_average_pace | tojson }},
-                    borderColor: 'red',
-                    borderDash: [5, 5], // dashed line for visual distinction
-                    borderWidth: 1,
-                    pointRadius: 0
-                }
-                ]
-            },
-            options: {
-                scales: {
-                    x: {
-                        ticks: {
-                            maxTicksLimit: 8,
-                            autoskip: true,
+                options: {
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxTicksLimit: 8,
+                                autoskip: true,
+                            }
+                        },
+                        
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'km / min', // <-- your label here
+                                font: {
+                                    size: 22,
+                                    style: 'italic',
+                                    weight: ""
+                            }
+                        },
+                            beginAtZero: true
                         }
                     },
-                    
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                    zoom: {
-                        pan: {
-                            enabled: true,
-                            mode: 'xy'
-                        },
+                    plugins: {
                         zoom: {
-                            wheel: {
-                                enabled: true
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
                             },
-                            pinch: {
-                                enabled: true
-                            },
-                            mode: 'xy'
+                            zoom: {
+                                wheel: {
+                                    enabled: true
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            }
                         }
                     }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
 
-<script>
-    const ctx2 = document.getElementById('bikePace');
-    new Chart(ctx2, {
-        type: 'line',
-        data: {
-            labels: {{ bike_workout_dates | tojson }},
-            datasets: [{
-                label: 'Bike Pace',
-                data: {{ bike_workout_paces | tojson }},
-                borderColor: 'blue',
-                borderWidth: 1,
-                pointRadius: 2
-            },
-            {
-                label: 'Average Pace',
-                data: {{ bike_workout_average_pace | tojson }},
-                borderColor: 'red',
-                borderDash: [5, 5], // dashed line for visual distinction
-                borderWidth: 1,
-                pointRadius: 0
-            }
-            
-            ]
-        },
-        options: {
-            scales: {
-                x: {
-                    ticks: {
-                        maxTicksLimit: 8,
-                        autoskip: true,
-                    }
-                },
-                y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                zoom: {
-                    pan: {
-                        enabled: true,
-                        mode: 'xy'
+        <script>
+            const ctx2 = document.getElementById('bikePace');
+            new Chart(ctx2, {
+                type: 'line',
+                data: {
+                    labels: {{ bike_workout_dates | tojson }},
+                    datasets: [{
+                        label: 'Bike Pace',
+                        data: {{ bike_workout_paces | tojson }},
+                        borderColor: 'blue',
+                        borderWidth: 1,
+                        pointRadius: 2
                     },
-                    zoom: {
-                        wheel: {
-                            enabled: true
+                    {
+                        label: 'Average Pace',
+                        data: {{ bike_workout_average_pace | tojson }},
+                        borderColor: 'red',
+                        borderDash: [5, 5], // dashed line for visual distinction
+                        borderWidth: 1,
+                        pointRadius: 0
+                    }
+                    
+                    ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxTicksLimit: 8,
+                                autoskip: true,
+                            }
                         },
-                        pinch: {
-                            enabled: true
+                        
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'km / min', // <-- your label here
+                                font: {
+                                    size: 22,
+                                    style: 'italic',
+                                    weight: ""
+                            }
                         },
-                        mode: 'xy'
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            },
+                            zoom: {
+                                wheel: {
+                                    enabled: true
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            }
+                        }
                     }
                 }
-            }
-        }
-    });
-</script>
+            });
+        </script>
 
-<script>
-    const ctx3 = document.getElementById('runPace');
-    new Chart(ctx3, {
-        type: 'line',
-        data: {
-            labels: {{ run_workout_dates | tojson }},
-            datasets: [{
-                label: 'Run Pace',
-                data: {{ run_workout_paces | tojson }},
-                borderColor: 'blue',
-                borderWidth: 1,
-                pointRadius: 2
-            },
-            {
-                label: 'Average Pace',
-                data: {{ run_workout_average_pace | tojson }},
-                borderColor: 'red',
-                borderDash: [5, 5], // dashed line for visual distinction
-                borderWidth: 1,
-                pointRadius: 0
-            }
-        ]
-        },
-        options: {
-            scales: {
-                x: {
-                    ticks: {
-                        maxTicksLimit: 8,
-                        autoskip: true,
-                    }
-                },
-                y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                zoom: {
-                    pan: {
-                        enabled: true,
-                        mode: 'xy'
+        <script>
+            const ctx3 = document.getElementById('runPace');
+            new Chart(ctx3, {
+                type: 'line',
+                data: {
+                    labels: {{ run_workout_dates | tojson }},
+                    datasets: [{
+                        label: 'Run Pace',
+                        data: {{ run_workout_paces | tojson }},
+                        borderColor: 'blue',
+                        borderWidth: 1,
+                        pointRadius: 2
                     },
-                    zoom: {
-                        wheel: {
-                            enabled: true
+                    {
+                        label: 'Average Pace',
+                        data: {{ run_workout_average_pace | tojson }},
+                        borderColor: 'red',
+                        borderDash: [5, 5], // dashed line for visual distinction
+                        borderWidth: 1,
+                        pointRadius: 0
+                    }
+                ]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            ticks: {
+                                maxTicksLimit: 8,
+                                autoskip: true,
+                            }
                         },
-                        pinch: {
-                            enabled: true
+                        
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'km / min', // <-- your label here
+                                font: {
+                                    size: 22,
+                                    style: 'italic',
+                                    weight: ""
+                            }
                         },
-                        mode: 'xy'
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        zoom: {
+                            pan: {
+                                enabled: true,
+                                mode: 'xy'
+                            },
+                            zoom: {
+                                wheel: {
+                                    enabled: true
+                                },
+                                pinch: {
+                                    enabled: true
+                                },
+                                mode: 'xy'
+                            }
+                        }
                     }
                 }
-            }
-        }
-    });
-</script>
-    
+            });
+        </script>
+    </div>
 </body>
 </html>
