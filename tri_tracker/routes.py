@@ -1,6 +1,6 @@
 from flask import render_template, request, jsonify, redirect, url_for, flash, session
 from tri_tracker.models import User, Workout, db
-from sqlalchemy import asc, desc
+from sqlalchemy import asc, desc, func
 import time
 
 
@@ -129,3 +129,23 @@ def get_log(user_id: int):
     .all()
 
     return workouts
+
+def get_totals_by_type(user_id: int) -> dict:
+    results = db.session.query(
+        Workout.workout_type,
+        func.sum(Workout.distance).label("total_distance"),
+        func.sum(Workout.duration).label("total_duration"),
+    )\
+    .filter_by(user_id=user_id)\
+    .group_by(Workout.workout_type)\
+    .all()
+
+    totals = {
+        workout_type: {
+            "distance": total_distance or 0,
+            "duration": total_duration or 0
+        }
+        for workout_type, total_distance, total_duration in results
+    }
+    
+    return totals
