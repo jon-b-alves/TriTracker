@@ -8,12 +8,12 @@
 </head>
 <body class="bg-gray-200 h-screen">
     <div class="flex h-full w-full">
-        <div class="bg-green-500 p-6 m-2 rounded-lg">
-            <h1>{{ username }} <br>id: {{ user_id }}</h1><br><br>
-            <h2 class="text-3xl font-bold text-center mb-6">Workout</h2>
+        <div class="bg-gray-400 p-4 rounded-lg">
+            <h1 class="text-2xl text-center font-bold">{{ username }}</h1><br>
+            <h2 class="text-2xl underline text-center">Enter Workout</h2><br>
             <form method="POST" action="/create-workout">
                 <div class="flex flex-col">
-                    <label for="type">Type of workout</label>    
+                    <label for="type" class="text-center">Type of workout</label>    
                     <select name="type" id="type" class="border border-gray-600 rounded-md">
                         <option value="swim">swim</option>
                         <option value="bike">bike</option>
@@ -22,19 +22,19 @@
                 </div>
 
                 <div class="flex flex-col"> 
-                    <label for="distance">Insert distance (kilometers)</label>
+                    <label for="distance" class="text-center">Distance (kilometers)</label>
                     <input type="number" step="any" name="distance" id="distance" min="0" required class="rounded-md"> <br><br>
                 </div>
 
                 <div class="flex flex-col">
-                    <label for="duration">Insert duration (minutes)</label>
+                    <label for="duration" class="text-center">Duration (minutes)</label>
                     <input type="number" step="any" name="duration" id="duration" min="0" required class="rounded-md"> <br><br>
                 </div>
                 
                 <button type="submit" class="bg-blue-500 text-white rounded-lg py-2 w-full hover:bg-blue-600 transition">Submit</button>
             
-            <div class="flex flex-col py-16 my-16">
-                <br><br><br><br><h2 class="text-3xl font-bold text-center mb-6">Workout Log</h2>
+            <div class="flex flex-col my-20">
+                <h2 class="text-2xl text-center mb-6 underline">Workout Log</h2>
                 <a href="{{ url_for('workout_log') }}" class="bg-red-500 justify-end text-center text-white rounded-lg py-2 w-full hover:bg-red-600 transition">Redirect</a>
             </div>
         </div>
@@ -43,20 +43,26 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
         
-        <div class="flex flex-col justify-center items-center w-2/5">
-            <div class="p-4">
-                <canvas id="swimPace" width="600" height="250"></canvas>
+        <section class="flex flex-row justify-center items-center w-full">
+            <div class="flex flex-col mx-20">
+                <canvas id="swimPace" width="600" height="250" class="my-4 bg-white rounded-lg shadow"></canvas>
+                <canvas id="bikePace" width="600" height="250" class="my-4 bg-white rounded-lg shadow"></canvas>
+                <canvas id="runPace" width="600" height="250" class="my-4 bg-white rounded-lg shadow"></canvas>
             </div>
 
-            <div class="p-4">
-                <canvas id="bikePace" width="600" height="250"></canvas>
+            <div class="flex flex-col mx-20">
+                <h1 class="text-center underline">Total Distance</h1>
+                <canvas id="totalDistance" class=""></canvas><br><br><br><br>
+                <h1 class="text-center underline">Total Duration</h1>
+                <canvas id="totalDuration" class=""></canvas>
             </div>
+        </section>
 
-            <div class="p-4">
-                <canvas id="runPace" width="600" height="250"></canvas>
-            </div>
-        </div>
-
+        
+        
+        
+        
+        
         <script>
             const ctx = document.getElementById('swimPace');
             new Chart(ctx, {
@@ -255,6 +261,55 @@
                 }
             });
         </script>
+
+        <script>
+            const totalDistance = document.getElementById("totalDistance");
+            new Chart(totalDistance, {
+                type: "doughnut",
+                data: {
+                    labels: [
+                        "swim",
+                        "run",
+                        "bike"
+                    ],
+                    datasets: [{
+                        label: "test label",
+                        data: [300, 50, 100],
+                        backgroundColor: [
+                            "rgb(255, 99, 132)",
+                            "rgb(54, 162, 235)",
+                            "rgb(255, 205, 86)"
+                        ],
+                        hoverOffset: 4
+                    }]
+                }
+            });
+        </script>
+
+        <script>
+            const totalDuration = document.getElementById("totalDuration");
+            new Chart(totalDuration, {
+                type: "doughnut",
+                data: {
+                    labels: [
+                        "swim",
+                        "run",
+                        "bike"
+                    ],
+                    datasets: [{
+                        label: "test label",
+                        data: [300, 50, 100],
+                        backgroundColor: [
+                            "rgb(255, 99, 132)",
+                            "rgb(54, 162, 235)",
+                            "rgb(255, 205, 86)"
+                        ],
+                        hoverOffset: 4
+                    }]
+                }
+            });
+        </script>
+        
     </div>
 </body>
 </html>
