@@ -45,16 +45,19 @@
         
         <section class="flex flex-row justify-center items-center w-full">
             <div class="flex flex-col mx-20">
-                <canvas id="swimPace" width="600" height="250" class="my-4 bg-white rounded-lg shadow"></canvas>
-                <canvas id="bikePace" width="600" height="250" class="my-4 bg-white rounded-lg shadow"></canvas>
-                <canvas id="runPace" width="600" height="250" class="my-4 bg-white rounded-lg shadow"></canvas>
+                
+                <canvas id="swimPace" width="800" height="300" class="my-1 bg-white rounded-lg shadow"></canvas>
+                
+                <canvas id="bikePace" width="800" height="300" class="my-1 bg-white rounded-lg shadow"></canvas>
+                
+                <canvas id="runPace" width="800" height="300" class="my-1 bg-white rounded-lg shadow"></canvas>
             </div>
 
             <div class="flex flex-col mx-20">
-                <h1 class="text-center underline">Total Distance</h1>
-                <canvas id="totalDistance" class=""></canvas><br><br><br><br>
-                <h1 class="text-center underline">Total Duration</h1>
-                <canvas id="totalDuration" class=""></canvas>
+                <h1 class="text-center underline text-2xl">Distance Traveled</h1>
+                <canvas id="totalDistance" width="350" class=""></canvas><br><br><br><br>
+                <h1 class="text-center underline text-2xl">Time Spent</h1>
+                <canvas id="totalDuration" width="350" class=""></canvas>
             </div>
         </section>
 
@@ -267,14 +270,10 @@
             new Chart(totalDistance, {
                 type: "doughnut",
                 data: {
-                    labels: [
-                        "swim",
-                        "run",
-                        "bike"
-                    ],
+                    labels: {{ doughnut_labels | tojson }},
                     datasets: [{
-                        label: "test label",
-                        data: [300, 50, 100],
+                        label: "kilometers",
+                        data: {{ doughnut_distances | tojson }},
                         backgroundColor: [
                             "rgb(255, 99, 132)",
                             "rgb(54, 162, 235)",
@@ -291,14 +290,10 @@
             new Chart(totalDuration, {
                 type: "doughnut",
                 data: {
-                    labels: [
-                        "swim",
-                        "run",
-                        "bike"
-                    ],
+                    labels: {{ doughnut_labels | tojson }},
                     datasets: [{
-                        label: "test label",
-                        data: [300, 50, 100],
+                        label: "minutes",
+                        data: {{ doughnut_durations | tojson }},
                         backgroundColor: [
                             "rgb(255, 99, 132)",
                             "rgb(54, 162, 235)",

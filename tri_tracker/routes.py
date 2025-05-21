@@ -13,6 +13,7 @@ def init_routes(app):
         run_workout_dates, run_workout_paces, run_workout_average_pace = get_workouts("run", user_id)
         swim_workout_dates, swim_workout_paces, swim_workout_average_pace = get_workouts("swim", user_id)
         bike_workout_dates, bike_workout_paces, bike_workout_average_pace = get_workouts("bike", user_id)
+        doughnut_labels, doughnut_distances, doughnut_durations = get_totals_by_type(user_id)
         
 
         if username and user_id:
@@ -31,7 +32,11 @@ def init_routes(app):
                 
                 bike_workout_dates=bike_workout_dates,
                 bike_workout_paces=bike_workout_paces,
-                bike_workout_average_pace=bike_workout_average_pace
+                bike_workout_average_pace=bike_workout_average_pace,
+
+                doughnut_labels=doughnut_labels, 
+                doughnut_distances=doughnut_distances, 
+                doughnut_durations=doughnut_durations
             )    
         return redirect(url_for("login"))
     
@@ -130,7 +135,7 @@ def get_log(user_id: int):
 
     return workouts
 
-def get_totals_by_type(user_id: int) -> dict:
+def get_totals_by_type(user_id: int):
     results = db.session.query(
         Workout.workout_type,
         func.sum(Workout.distance).label("total_distance"),
@@ -140,12 +145,13 @@ def get_totals_by_type(user_id: int) -> dict:
     .group_by(Workout.workout_type)\
     .all()
 
-    totals = {
-        workout_type: {
-            "distance": total_distance or 0,
-            "duration": total_duration or 0
-        }
-        for workout_type, total_distance, total_duration in results
-    }
-    
-    return totals
+    labels = []
+    distances = []
+    durations = []
+
+    for workout_type, total_distance, total_duration in results:
+        labels.append(workout_type)
+        distances.append(total_distance or 0)
+        durations.append(total_duration or 0)
+
+    return labels, distances, durations
