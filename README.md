@@ -1,6 +1,8 @@
 # 🏃TriTracker
 A statistical tracker for triathlon athletes.
 
+![Logo](image.png)
+
 ## Installation
 - Clone the repository.
 ```
